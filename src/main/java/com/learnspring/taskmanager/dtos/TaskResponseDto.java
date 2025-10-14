@@ -1,26 +1,19 @@
-package com.learnspring.taskmanager.model;
+package com.learnspring.taskmanager.dtos;
 
-
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import com.learnspring.taskmanager.model.Status;
+import com.learnspring.taskmanager.model.User;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "tasks")
 @Data
-
-public class Task {
-    @Indexed(unique = true)
+@Getter
+@Setter
+public class TaskResponseDto {
     private ObjectId id;
-
     private String title;
-
     private String description;
     private Status status;
-
     private int dueDays;
     private String createdBy;
     @DBRef
