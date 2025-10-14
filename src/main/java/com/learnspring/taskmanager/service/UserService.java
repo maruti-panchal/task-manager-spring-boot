@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,9 +26,62 @@ public class UserService {
 
     }
 
+
+    public TaskResponseDto updateTask(String id, TaskRequestDto taskRequestDto) {
+        // Step 1: Find existing task
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+        // Step 2: Update fields only if new values are provided
+        if (taskRequestDto.getTitle() != null) {
+            existingTask.setTitle(taskRequestDto.getTitle());
+        }
+        if (taskRequestDto.getDescription() != null) {
+            existingTask.setDescription(taskRequestDto.getDescription());
+        }
+
+        if (taskRequestDto.getDueDays() != 0) {
+            existingTask.setDueDays(taskRequestDto.getDueDays());
+        }
+
+        Task updatedTask = taskRepository.save(existingTask);
+
+        TaskResponseDto responseDto = new TaskResponseDto();
+        responseDto.setTitle(updatedTask.getTitle());
+        responseDto.setDescription(updatedTask.getDescription());
+        responseDto.setStatus(updatedTask.getStatus());
+        responseDto.setDueDays(updatedTask.getDueDays());
+        responseDto.setCreatedBy(updatedTask.getCreatedBy());
+
+        return responseDto;
+    }
+
+
     public List<Task> getUserTasks(){
         return new ArrayList<>(taskRepository.findAll());
     }
+
+
+    public boolean deleteUserTask(String id){
+        taskRepository.deleteById(id);
+        return true;
+    }
+
+
+    public TaskResponseDto getTaskById(String id){
+        Optional<Task> task=taskRepository.findById(id);
+        if(task.isPresent()){
+            TaskResponseDto taskResponseDto=new TaskResponseDto();
+            taskResponseDto.setTitle(task.get().getTitle());
+            taskResponseDto.setDescription(task.get().getDescription());
+            taskResponseDto.setStatus(task.get().getStatus());
+            taskResponseDto.setCreatedBy(task.get().getCreatedBy());
+            taskResponseDto.setDueDays(task.get().getDueDays());
+            return taskResponseDto;
+        }
+        return null;
+    }
+
 
     public TaskResponseDto craeteUserTask(TaskRequestDto taskRequestDto){
         User user=userRepository.findUserByUsername(taskRequestDto.getUsername());
@@ -52,7 +106,6 @@ public class UserService {
         taskResponseDto.setDescription(taskmodel.getDescription());
         taskResponseDto.setDueDays(taskmodel.getDueDays());
         taskResponseDto.setCreatedBy(taskmodel.getCreatedBy());
-        taskResponseDto.setUser(taskmodel.getUser());
         return taskResponseDto;
     }
 

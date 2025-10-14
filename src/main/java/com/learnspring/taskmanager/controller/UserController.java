@@ -6,6 +6,7 @@ import com.learnspring.taskmanager.model.Task;
 import com.learnspring.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,20 +33,20 @@ public class UserController {
 
     //Get specific Task
     @GetMapping("/task/{id}")
-    public ResponseEntity<Task> getUserTask(@PathVariable Long id){
-        return null;
+    public ResponseEntity<TaskResponseDto> getUserTask(@PathVariable String id){
+        return ResponseEntity.ok(userService.getTaskById(id));
     }
 
     //update specific Task
     @PutMapping("/task/{id}")
-    public ResponseEntity<Task> updateUserTask(@PathVariable Long id, @RequestBody Task task){
-        return null;
+    public ResponseEntity<TaskResponseDto> updateUserTask(@PathVariable String id, @RequestBody TaskRequestDto task){
+        return new ResponseEntity<>(userService.updateTask(id,task),HttpStatus.OK);
     }
 
     //delete specific Task
     @DeleteMapping("/task/{id}")
-    public ResponseEntity<Void> deleteUserTask(@PathVariable Long id){
-        return null;
+    public ResponseEntity<Boolean> deleteUserTask(@PathVariable String id){
+        return ResponseEntity.ok(userService.deleteUserTask(id));
     }
 
 }

@@ -15,6 +15,5 @@ public class TaskResponseDto {
     private Status status;
     private int dueDays;
     private String createdBy;
-    @DBRef
-    private User user;
+
 }
