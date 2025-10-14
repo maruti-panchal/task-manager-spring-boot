@@ -15,10 +15,12 @@ import java.util.List;
 public class UserService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
 
-    public UserService(TaskRepository taskRepository) {
+    public UserService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
 
 
     }
@@ -28,8 +30,10 @@ public class UserService {
     }
 
     public TaskResponseDto craeteUserTask(TaskRequestDto taskRequestDto){
+        User user=userRepository.findUserByUsername(taskRequestDto.getUsername());
         Task task = new Task();
         task=convertTaskRequestDtoToTask(taskRequestDto);
+        task.setUser(user);
         return conversionTaskToTaskResponseDto(taskRepository.save(task));
     }
 
@@ -48,6 +52,7 @@ public class UserService {
         taskResponseDto.setDescription(taskmodel.getDescription());
         taskResponseDto.setDueDays(taskmodel.getDueDays());
         taskResponseDto.setCreatedBy(taskmodel.getCreatedBy());
+        taskResponseDto.setUser(taskmodel.getUser());
         return taskResponseDto;
     }
 

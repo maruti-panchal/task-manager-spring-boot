@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 @Getter
 @Setter
-@Builder
 public class SignUpRequestDto {
     @Indexed(unique = true)
     @NonNull

@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Getter
 @Setter
 public class TaskResponseDto {
-    private ObjectId id;
     private String title;
     private String description;
     private Status status;

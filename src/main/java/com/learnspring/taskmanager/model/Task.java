@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,8 +14,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 
 public class Task {
-    @Indexed(unique = true)
-    private ObjectId id;
+
+
+    @Id
+    private String id;
 
     private String title;
 
@@ -23,6 +26,6 @@ public class Task {
 
     private int dueDays;
     private String createdBy;
-    @DBRef
+    @DBRef(lazy = true)
     private User user;
 }

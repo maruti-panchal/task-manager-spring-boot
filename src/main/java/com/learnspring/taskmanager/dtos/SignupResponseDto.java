@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 @Getter
 @Setter
-@Builder
 public class SignupResponseDto {
     private ObjectId id;
     private String username;
