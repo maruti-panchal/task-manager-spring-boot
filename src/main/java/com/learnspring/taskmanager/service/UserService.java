@@ -16,44 +16,22 @@ import java.util.Optional;
 public class UserService {
 
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
 
 
-    public UserService(TaskRepository taskRepository, UserRepository userRepository) {
+    public UserService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
-
-
     }
 
 
-    public TaskResponseDto updateTask(String id, TaskRequestDto taskRequestDto) {
-        // Step 1: Find existing task
-        Task existingTask = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
-
-        // Step 2: Update fields only if new values are provided
-        if (taskRequestDto.getTitle() != null) {
-            existingTask.setTitle(taskRequestDto.getTitle());
+    public Task updateTask(String id, Task usertask) {
+       Task dbTask=taskRepository.findById(id).orElse(null);
+        if(dbTask!=null){
+            dbTask.setTitle(usertask.getTitle());
+            dbTask.setDescription(usertask.getDescription());
+            dbTask.setDueDays(usertask.getDueDays());
         }
-        if (taskRequestDto.getDescription() != null) {
-            existingTask.setDescription(taskRequestDto.getDescription());
-        }
-
-        if (taskRequestDto.getDueDays() != 0) {
-            existingTask.setDueDays(taskRequestDto.getDueDays());
-        }
-
-        Task updatedTask = taskRepository.save(existingTask);
-
-        TaskResponseDto responseDto = new TaskResponseDto();
-        responseDto.setTitle(updatedTask.getTitle());
-        responseDto.setDescription(updatedTask.getDescription());
-        responseDto.setStatus(updatedTask.getStatus());
-        responseDto.setDueDays(updatedTask.getDueDays());
-        responseDto.setCreatedBy(updatedTask.getCreatedBy());
-
-        return responseDto;
+        assert dbTask != null;
+        return taskRepository.save(dbTask);
     }
 
 
@@ -68,46 +46,35 @@ public class UserService {
     }
 
 
-    public TaskResponseDto getTaskById(String id){
-        Optional<Task> task=taskRepository.findById(id);
-        if(task.isPresent()){
-            TaskResponseDto taskResponseDto=new TaskResponseDto();
-            taskResponseDto.setTitle(task.get().getTitle());
-            taskResponseDto.setDescription(task.get().getDescription());
-            taskResponseDto.setStatus(task.get().getStatus());
-            taskResponseDto.setCreatedBy(task.get().getCreatedBy());
-            taskResponseDto.setDueDays(task.get().getDueDays());
-            return taskResponseDto;
-        }
-        return null;
+    public Task getTaskById(String id){
+        return taskRepository.findById(id).orElse(null);
+
     }
 
 
-    public TaskResponseDto craeteUserTask(TaskRequestDto taskRequestDto){
-        User user=userRepository.findUserByUsername(taskRequestDto.getUsername());
-        Task task = new Task();
-        task=convertTaskRequestDtoToTask(taskRequestDto);
-        task.setUser(user);
-        return conversionTaskToTaskResponseDto(taskRepository.save(task));
+    public Task craeteUserTask(Task task){
+     return taskRepository.save(task);
     }
 
-    public Task convertTaskRequestDtoToTask(TaskRequestDto taskRequestDto){
-        Task task=new Task();
-        task.setTitle(taskRequestDto.getTitle());
-        task.setDescription(taskRequestDto.getDescription());
-        task.setDueDays(taskRequestDto.getDueDays());
-        task.setCreatedBy(taskRequestDto.getUsername());
-        return task;
-    }
 
-    public TaskResponseDto conversionTaskToTaskResponseDto(Task taskmodel){
-        TaskResponseDto taskResponseDto=new TaskResponseDto();
-        taskResponseDto.setTitle(taskmodel.getTitle());
-        taskResponseDto.setDescription(taskmodel.getDescription());
-        taskResponseDto.setDueDays(taskmodel.getDueDays());
-        taskResponseDto.setCreatedBy(taskmodel.getCreatedBy());
-        return taskResponseDto;
-    }
+//
+//    public Task convertTaskRequestDtoToTask(TaskRequestDto taskRequestDto){
+//        Task task=new Task();
+//        task.setTitle(taskRequestDto.getTitle());
+//        task.setDescription(taskRequestDto.getDescription());
+//        task.setDueDays(taskRequestDto.getDueDays());
+//        task.setCreatedBy(taskRequestDto.getUsername());
+//        return task;
+//    }
+//
+//    public TaskResponseDto conversionTaskToTaskResponseDto(Task taskmodel){
+//        TaskResponseDto taskResponseDto=new TaskResponseDto();
+//        taskResponseDto.setTitle(taskmodel.getTitle());
+//        taskResponseDto.setDescription(taskmodel.getDescription());
+//        taskResponseDto.setDueDays(taskmodel.getDueDays());
+//        taskResponseDto.setCreatedBy(taskmodel.getCreatedBy());
+//        return taskResponseDto;
+//    }
 
 
 }

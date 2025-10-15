@@ -19,31 +19,32 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-        //Get all task
+
     @GetMapping("/task")
     public ResponseEntity<List<Task>> getUserTasks(){
             return ResponseEntity.ok(userService.getUserTasks());
     }
 
-    //Create Task
+
     @PostMapping("/task")
-    public ResponseEntity<TaskResponseDto> createUserTask(@RequestBody TaskRequestDto task){
+    public ResponseEntity<Task> createUserTask(@RequestBody Task task){
         return new ResponseEntity<>(userService.craeteUserTask(task),HttpStatus.CREATED);
     }
 
-    //Get specific Task
+
+
     @GetMapping("/task/{id}")
-    public ResponseEntity<TaskResponseDto> getUserTask(@PathVariable String id){
+    public ResponseEntity<Task> getUserTask(@PathVariable String id){
         return ResponseEntity.ok(userService.getTaskById(id));
     }
 
-    //update specific Task
+
     @PutMapping("/task/{id}")
-    public ResponseEntity<TaskResponseDto> updateUserTask(@PathVariable String id, @RequestBody TaskRequestDto task){
+    public ResponseEntity<Task> updateUserTask(@PathVariable String id, @RequestBody Task task){
         return new ResponseEntity<>(userService.updateTask(id,task),HttpStatus.OK);
     }
 
-    //delete specific Task
+
     @DeleteMapping("/task/{id}")
     public ResponseEntity<Boolean> deleteUserTask(@PathVariable String id){
         return ResponseEntity.ok(userService.deleteUserTask(id));

@@ -5,7 +5,11 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.annotation.Collation;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document(collection = "users")
@@ -16,19 +20,14 @@ public class User {
     @Id
     private ObjectId id;
     @Indexed(unique = true)
-    @NonNull
     private String username;
-    @NonNull
     private String firstName;
-    @NonNull
     private String lastName;
-    @NonNull
     private String email;
-    @NonNull
     private String phone;
-    @NonNull
     private String password;
-    @NonNull
     private String role;
+    @DBRef
+    private List<Task> users=new ArrayList<>();
 
 }
