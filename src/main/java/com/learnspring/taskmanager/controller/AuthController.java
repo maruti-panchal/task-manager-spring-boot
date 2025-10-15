@@ -1,5 +1,6 @@
 package com.learnspring.taskmanager.controller;
 
+import com.learnspring.taskmanager.dtos.LoginRequestDto;
 import com.learnspring.taskmanager.dtos.LoginResponseDto;
 import com.learnspring.taskmanager.dtos.SignUpRequestDto;
 import com.learnspring.taskmanager.dtos.SignupResponseDto;
@@ -25,7 +26,7 @@ public class AuthController {
 
     // Log in
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody SignUpRequestDto signUpRequestDto) {
-        return ResponseEntity.ok(authService.login(signUpRequestDto));
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok(authService.login(loginRequestDto));
     }
 }

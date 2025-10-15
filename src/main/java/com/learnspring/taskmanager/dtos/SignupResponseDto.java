@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 @Getter
 @Setter
 public class SignupResponseDto {
-    private ObjectId id;
+    private String id;
     private String username;
     private String email;
     private String phone;

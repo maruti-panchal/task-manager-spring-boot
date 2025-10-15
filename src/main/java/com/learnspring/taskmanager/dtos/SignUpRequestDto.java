@@ -10,18 +10,11 @@ import org.springframework.data.mongodb.core.index.Indexed;
 @Setter
 public class SignUpRequestDto {
     @Indexed(unique = true)
-    @NonNull
     private String username;
-    @NonNull
     private String firstName;
-    @NonNull
     private String lastName;
-    @NonNull
     private String email;
-    @NonNull
     private String phone;
-    @NonNull
     private String password;
-    @NonNull
     private String role;
 }

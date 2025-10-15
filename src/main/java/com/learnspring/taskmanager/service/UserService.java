@@ -16,10 +16,11 @@ import java.util.Optional;
 public class UserService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-
-    public UserService(TaskRepository taskRepository) {
+    public UserService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -52,8 +53,13 @@ public class UserService {
     }
 
 
-    public Task craeteUserTask(Task task){
-     return taskRepository.save(task);
+    public TaskResponseDto craeteUserTask(Task task){
+        User user=userRepository.findUserByUsername(task.getUsername());
+        Task taskObj=taskRepository.save(task);
+        user.getTasks().add(taskObj);
+        userRepository.save(user);
+        return conversionTaskToTaskResponseDto(taskObj);
+
     }
 
 
@@ -67,14 +73,15 @@ public class UserService {
 //        return task;
 //    }
 //
-//    public TaskResponseDto conversionTaskToTaskResponseDto(Task taskmodel){
-//        TaskResponseDto taskResponseDto=new TaskResponseDto();
-//        taskResponseDto.setTitle(taskmodel.getTitle());
-//        taskResponseDto.setDescription(taskmodel.getDescription());
-//        taskResponseDto.setDueDays(taskmodel.getDueDays());
-//        taskResponseDto.setCreatedBy(taskmodel.getCreatedBy());
-//        return taskResponseDto;
-//    }
+    public TaskResponseDto conversionTaskToTaskResponseDto(Task taskmodel){
+        TaskResponseDto taskResponseDto=new TaskResponseDto();
+        taskResponseDto.setTitle(taskmodel.getTitle());
+        taskResponseDto.setDescription(taskmodel.getDescription());
+        taskResponseDto.setDueDays(taskmodel.getDueDays());
+        taskResponseDto.setId(taskmodel.getId().toString());
+        taskResponseDto.setUsername(taskmodel.getUsername());
+        return taskResponseDto;
+    }
 
 
 }

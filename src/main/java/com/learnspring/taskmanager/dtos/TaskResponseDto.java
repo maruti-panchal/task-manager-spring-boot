@@ -6,7 +6,9 @@ import lombok.*;
 @Getter
 @Setter
 public class TaskResponseDto {
+    private String id;
     private String title;
     private String description;
     private int dueDays;
+    private String username;
 }

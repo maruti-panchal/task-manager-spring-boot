@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
     @Id
-    private ObjectId id;
+    private String id;
     @Indexed(unique = true)
     private String username;
     private String firstName;
@@ -28,6 +28,6 @@ public class User {
     private String password;
     private String role;
     @DBRef
-    private List<Task> users=new ArrayList<>();
+    private List<Task> tasks=new ArrayList<>();
 
 }

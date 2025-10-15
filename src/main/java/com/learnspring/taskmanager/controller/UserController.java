@@ -27,7 +27,7 @@ public class UserController {
 
 
     @PostMapping("/task")
-    public ResponseEntity<Task> createUserTask(@RequestBody Task task){
+    public ResponseEntity<TaskResponseDto> createUserTask(@RequestBody Task task){
         return new ResponseEntity<>(userService.craeteUserTask(task),HttpStatus.CREATED);
     }
 
