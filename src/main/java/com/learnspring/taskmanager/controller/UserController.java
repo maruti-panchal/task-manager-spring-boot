@@ -1,12 +1,12 @@
 package com.learnspring.taskmanager.controller;
 
-import com.learnspring.taskmanager.dtos.TaskRequestDto;
+
 import com.learnspring.taskmanager.dtos.TaskResponseDto;
 import com.learnspring.taskmanager.model.Task;
 import com.learnspring.taskmanager.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
