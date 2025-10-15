@@ -6,14 +6,13 @@ import com.learnspring.taskmanager.dtos.SignUpRequestDto;
 import com.learnspring.taskmanager.dtos.SignupResponseDto;
 import com.learnspring.taskmanager.model.User;
 import com.learnspring.taskmanager.repository.UserRepository;
+import com.learnspring.taskmanager.security.JwtUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+
 
 @Service
 public class AuthService {
@@ -21,23 +20,15 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
     AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+
     }
 
-//    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-//        LoginResponseDto loginResponseDto = new LoginResponseDto();
-//       try{
-//           authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), loginRequestDto.getPassword()));
-//           loginResponseDto.setUsername(loginRequestDto.getUsername());
-//           loginResponseDto.setToken(UUID.randomUUID().toString());
-//       }catch (Exception e){
-//           throw new RuntimeException("Login failed");
-//       }
-//        return loginResponseDto;
-//    }
+
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
     authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
@@ -45,11 +36,12 @@ public class AuthService {
                     loginRequestDto.getPassword() // raw password
             )
     );
+    String token= JwtUtils.createJwtToken(loginRequestDto.getUsername());
 
 
     return LoginResponseDto.builder()
             .username(loginRequestDto.getUsername())
-            .token(UUID.randomUUID().toString())
+            .token(token)
             .build();
 }
 
